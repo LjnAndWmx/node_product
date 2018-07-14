@@ -48,6 +48,13 @@
             </tbody>
         </table>
     </div>
+    <script>
+    function search(){
+        console.log('我被点击了')
+       const keyword = $('#studentNameId').val()
+       location.href = '/studentManager/list?keyword='+keyword
+    }
+    </script>
 </div>
 
 {{/block}}

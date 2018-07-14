@@ -7,9 +7,12 @@ const studentManagerRouter = express.Router()
 // 引入包
 const stuManagerCtrl = require(path.join(__dirname,'../controllers/studentManagerController.js'))
 // 首页页面响应
-studentManagerRouter.get('/child',stuManagerCtrl.getInfo)
+studentManagerRouter.get('/list',stuManagerCtrl.getStuManagerListPage)
 
+studentManagerRouter.get('/add',stuManagerCtrl.getAddStu)
 
+// 新增学生方法
+studentManagerRouter.post('/add',stuManagerCtrl.addStudent)
 
 // 暴露出去accountRounter
 module.exports = studentManagerRouter
