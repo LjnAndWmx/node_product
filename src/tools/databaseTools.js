@@ -1,10 +1,18 @@
 const MongoClient = require('mongodb').MongoClient
+const ObjectId = require('mongodb').ObjectId
 
+exports.ObjectId = ObjectId
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://localhost:27017'
 
 // Database Name
-const dbName = 'mydatabase';
+const dbName = 'mydatabase'
+
+
+// // 封装数据库连接函数
+// function getCollecttion(){
+
+// }
 
 
 /**
@@ -44,7 +52,6 @@ exports.findOne = (collecttionsName, param, callback) => {
         })
     })
 }
-
 //  查询多条文档
 exports.findList = (collecttionsName, params, callback) => {
     MongoClient.connect(url, {
@@ -57,5 +64,23 @@ exports.findList = (collecttionsName, params, callback) => {
             callback(err, docs)
         })
     })
+}
 
+/**
+ * 暴露出去删除学生信息公共方法
+ * @param {*} collecttionsName 操作的集合
+ * @param {*} params 提供参数
+ * @param {*} callback 回调函数
+ */
+exports.deleteOne = (collecttionsName, params, callback)=>{
+    MongoClient.connect(url, {
+        useNewUrlParser: true
+    }, function (err, client) {
+        const db = client.db(dbName);
+        const collection = db.collection(collecttionsName);
+        collection.deleteOne(params,(err, result) => {
+            client.close()
+            callback(err, result)
+        })
+    })
 }

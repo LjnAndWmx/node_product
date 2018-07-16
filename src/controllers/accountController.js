@@ -8,12 +8,17 @@ const databasetool = require(path.join(__dirname,'../tools/databaseTools.js'))
 exports.getlogin = (req, res) => {
     res.sendFile(path.join(__dirname, '../views/login.html'))
 }
+/**
+ * 判断登陆页面是否成功,改动点。登陆成功session保存用户名进行校验是否是管理员
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.login = (req, res) => {
     const result = {
         status: 0,
         message: '登入成功'
     }
-    //    console.log(req.body)
+       console.log(req.body)
     const {
         username,
         password,
@@ -28,18 +33,25 @@ exports.login = (req, res) => {
         return
     }
     databasetool.findOne('people', {
-        username,
-        password
+        username:req.body.username,
+        password:req.body.password
     }, (err, doc) => {
         if (doc == null) {
             // 登陆失败
             result.status = 2
             result.message = '用户名或密码有误'
+        }else{
+            req.session.loginedName = username
+            console.log(req.session.loginedName)
         }
         res.json(result)
     })
 }
-
+/**
+ * 暴露了获取随机验证码
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getvcode = (req, res) => {
     var code = '0123456789';
     var length = 4;
@@ -60,11 +72,19 @@ exports.getvcode = (req, res) => {
     });
     res.end(imgbase64);
 }
-
+/**
+ * 渲染注册页面
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.getRigister = (req, res) => {
     res.sendFile(path.join(__dirname, '../views/register.html'))
 }
-
+/**
+ * 暴露用户注册的方法
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.rigister = (req, res) => {
     const result = {
         status: 0,
@@ -95,4 +115,12 @@ exports.rigister = (req, res) => {
             }
         })
     // })
+}
+/**
+ * 账户推出
+ * @param {*} req 
+ * @param {*} res 
+ */
+exports.loginout = (req,res)=>{
+    
 }
